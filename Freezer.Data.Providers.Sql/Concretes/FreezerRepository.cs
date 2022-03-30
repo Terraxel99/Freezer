@@ -2,6 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
+    
+    using AutoMapper;
 
     using Data.Definitions;
     
@@ -10,9 +12,13 @@
     public class FreezerRepository : IFreezerRepository
     {
         private readonly FreezerDbContext db;
+        private readonly IMapper mapper;
 
-        public FreezerRepository(FreezerDbContext db)
-            => this.db = db ?? throw new ArgumentNullException(nameof(db));
+        public FreezerRepository(FreezerDbContext db, IMapper mapper)
+        {
+            this.db = db ?? throw new ArgumentNullException(nameof(db));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        }
 
         public int Create(Freezer freezer)
         {
@@ -25,14 +31,7 @@
         }
 
         public IEnumerable<Freezer> GetAll()
-        {
-            return this.db.Freezers
-                .Select(f => new Freezer
-                {
-                    Id = f.Id,
-                    Name = f.Name,
-                });
-        }
+            => this.mapper.Map<IEnumerable<Core.Models.Freezer>>(this.db.Freezers.ToList());
 
         public Freezer GetById(Guid id)
         {

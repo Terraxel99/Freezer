@@ -15,6 +15,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 builder.Services.AddScoped<IFreezerRepository, FreezerRepository>();
 
 builder.Services.AddScoped<IFreezerService, FreezerService>();

@@ -1,5 +1,7 @@
 ﻿namespace Freezer.Site.Controllers
 {
+    using AutoMapper;
+
     using Freezer.Business.Definitions;
 
     using Microsoft.AspNetCore.Http;
@@ -12,15 +14,15 @@
     public class FreezerController : ControllerBase
     {
         private readonly IFreezerService freezerService;
+        private readonly IMapper mapper;
 
-        public FreezerController(IFreezerService freezerService)
-            => this.freezerService = freezerService;
+        public FreezerController(IFreezerService freezerService, IMapper mapper)
+        {
+            this.freezerService = freezerService ?? throw new ArgumentNullException(nameof(freezerService));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        }
 
         public IEnumerable<FreezerViewModel> GetAll()
-        {
-            var freezers = this.freezerService.GetAll();
-
-            return Enumerable.Empty<FreezerViewModel>();
-        }
+            => this.mapper.Map<IEnumerable<FreezerViewModel>>(this.freezerService.GetAll());
     }
 }
