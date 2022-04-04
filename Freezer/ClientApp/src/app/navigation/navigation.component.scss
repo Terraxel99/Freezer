@@ -1,0 +1,39 @@
+.navigation { 
+    background-color: $primary-color;
+    padding: 1rem .5rem;
+
+    display: flex;
+
+    &__title-and-logo {
+        h1 {
+            display: inline-block;
+        }
+    }
+
+    &__links {
+        display: flex;
+        align-items: center;
+
+        margin-bottom: 0;
+
+        list-style-type: none;
+
+        &__link {
+
+
+
+            > a {
+                padding: 0.8rem 2rem;
+
+                text-decoration: none;
+                color: unset;
+
+                &:hover,
+                &:active,
+                &:focus {
+                    //background-color: $secondaryColor;
+                }
+            }
+        }
+    }
+}

@@ -22,7 +22,33 @@
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public IEnumerable<FreezerViewModel> GetAll()
-            => this.mapper.Map<IEnumerable<FreezerViewModel>>(this.freezerService.GetAll());
+        [HttpGet]
+        public async Task<IEnumerable<FreezerViewModel>> GetAll()
+            => this.mapper.Map<IEnumerable<FreezerViewModel>>(await this.freezerService.GetAllAsync());
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<ActionResult<FreezerViewModel>> GetById(Guid id)
+        {
+            var freezer = this.mapper.Map<FreezerViewModel>(await this.freezerService.GetByIdAsync(id));
+
+            if (freezer is null)
+                return this.NotFound();
+
+            return freezer;
+        }
+
+        [HttpPost]
+        public async Task Create(FreezerCreateViewModel freezer)
+            => await this.freezerService.CreateAsync(this.mapper.Map<Core.Models.Freezer>(freezer));
+
+        [HttpPut]
+        public Task Update(FreezerViewModel freezer)
+            => throw new NotImplementedException("Work in progress.");
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task Delete(Guid id)
+            => await this.freezerService.DeleteAsync(id);
     }
 }

@@ -4,6 +4,9 @@
 
     public interface IFreezerService
     {
-        public IEnumerable<Freezer> GetAll();
+        public Task<IEnumerable<Freezer>> GetAllAsync();
+        public Task<Freezer> GetByIdAsync(Guid id);
+        public Task CreateAsync(Freezer freezer);
+        public Task DeleteAsync(Guid id);
     }
 }

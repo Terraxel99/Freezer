@@ -8,7 +8,7 @@
     {
         public SqlMappingProfile()
         {
-            this.CreateMap<Freezer, Core.Models.Freezer>();
+            this.CreateMap<Freezer, Core.Models.Freezer>().ReverseMap();
         }
     }
 }

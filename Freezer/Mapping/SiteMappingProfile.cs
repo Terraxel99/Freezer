@@ -8,7 +8,8 @@
     {
         public SiteMappingProfile()
         {
-            this.CreateMap<Core.Models.Freezer, FreezerViewModel>();
+            this.CreateMap<Core.Models.Freezer, FreezerViewModel>().ReverseMap();
+            this.CreateMap<FreezerCreateViewModel, Core.Models.Freezer>();
         }
     }
 }

@@ -8,7 +8,8 @@
     using Data.Definitions;
     
     using Freezer.Core.Models;
-    
+    using Microsoft.EntityFrameworkCore;
+
     public class FreezerRepository : IFreezerRepository
     {
         private readonly FreezerDbContext db;
@@ -20,22 +21,25 @@
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public int Create(Freezer freezer)
+        public async Task CreateAsync(Freezer freezer)
         {
-            throw new NotImplementedException();
+            await this.db.Freezers.AddAsync(this.mapper.Map<Models.Freezer>(freezer));
+            await this.db.SaveChangesAsync();
         }
 
-        public void DeleteById(Guid id)
+        public async Task DeleteByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var freezer = new Models.Freezer { Id = id };
+            this.db.Freezers.Attach(freezer);
+            this.db.Freezers.Remove(freezer);
+
+            await this.db.SaveChangesAsync();
         }
 
-        public IEnumerable<Freezer> GetAll()
-            => this.mapper.Map<IEnumerable<Core.Models.Freezer>>(this.db.Freezers.ToList());
+        public async Task<IEnumerable<Freezer>> GetAllAsync()
+            => this.mapper.Map<IEnumerable<Core.Models.Freezer>>(await this.db.Freezers.ToListAsync());
 
-        public Freezer GetById(Guid id)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<Freezer> GetByIdAsync(Guid id)
+            => this.mapper.Map<Freezer>(await this.db.Freezers.SingleOrDefaultAsync(f => f.Id == id));
     }
 }
